@@ -26,7 +26,7 @@ public class UserEndPoints {
 		public static Response readUser(String userName)
 		{
 		Response response=given()
-					.pathParam("username", "userName")
+					.pathParam("username", userName)
 					
 			.when()
 				.get(Routes.get_url);
@@ -51,7 +51,7 @@ public class UserEndPoints {
 		public static Response deleteUser(String userName)
 		{
 		Response response=given()
-					.pathParam("username", "userName")
+					.pathParam("username", userName)
 					
 			.when()
 				.delete(Routes.delete_url);
