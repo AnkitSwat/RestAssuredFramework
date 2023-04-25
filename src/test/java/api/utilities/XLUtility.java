@@ -63,6 +63,7 @@ public class XLUtility {
 		int rowCount=sheet.getLastRowNum();
 		int cellCount=row.getLastCellNum();
 		
+		
 		DataFormatter formatter= new DataFormatter();
 		String data;
 		
@@ -78,7 +79,7 @@ public class XLUtility {
 		return data;
 	}
 	
-	public String setCellData(String sheetName,int rowNum,int colnum, String data) throws IOException
+	public void setCellData(String sheetName,int rowNum,int colnum, String data) throws IOException
 	{
 		File xlfile=new File(path);
 		if(!xlfile.exists()) //If file not exists then create new one

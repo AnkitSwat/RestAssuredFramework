@@ -1,5 +1,7 @@
 package api.test;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -14,9 +16,9 @@ public class UserTest {
 
 	Faker faker;
 	User userPayload;
-	
+	public Logger logger;
 	@BeforeClass
-	public void setupData()
+	public void setup()
 	{
 		faker=new Faker();
 		userPayload=new User();
@@ -29,30 +31,36 @@ public class UserTest {
 		userPayload.setPassword(faker.internet().password(5,10));
 		userPayload.setPhone(faker.phoneNumber().cellPhone());
 		
+		//logs
+		logger=LogManager.getLogger(this.getClass());
+		
 	}
 	
 	@Test(priority=1)
 	public void testPostUser()
 	{
+		logger.info("******************CreatingUser******************************");
 		Response response=UserEndPoints.createUser(userPayload);
 		response.then().log().all();
 		
 		Assert.assertEquals(response.getStatusCode(),200);
-		
+		logger.info("*********************User is created****************************");
 	}
 
 	@Test(priority=2)
 	public void testGetUserByName()
 	{
+		logger.info("Reading Info");
 		Response response=UserEndPoints.readUser(this.userPayload.getUsername());
 		response.then().log().all();
 		Assert.assertEquals(response.getStatusCode(),200);
-	
+		logger.info("Reading completed");
 	}
 	
 	@Test(priority=3)
 	public void testUpdateUserByName()
 	{
+		logger.info("updating User");
 		//Update data
 		userPayload.setUsername(faker.name().firstName());
 		userPayload.setLastName(faker.name().lastName());
@@ -66,15 +74,16 @@ public class UserTest {
 		Response responseAfterUpdate=UserEndPoints.readUser(this.userPayload.getUsername());
 		response.then().log().all();
 		Assert.assertEquals(responseAfterUpdate.getStatusCode(),200);
-
+		logger.info("updated");
 	}
 
 	@Test(priority=4)
 	public void testDeleteUserByName()
 	{
+		logger.info("Deleting Info");
 		Response response=UserEndPoints.deleteUser(this.userPayload.getUsername());
 		Assert.assertEquals(response.getStatusCode(),200);
-	
+		logger.info("Deleted Info");
 	}
 	
 }
